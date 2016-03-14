@@ -7,7 +7,7 @@ while [ ! -f $stream_link_file ]; do
     sleep 5
 done
 
-ls
+# all snaps always start in a writable snap personal directory
 . ./$stream_link_file
 if [ -z "$STREAM_URL" ]; then
     echo "Invalid $stream_link_file file, deleting and exiting"
@@ -16,5 +16,7 @@ if [ -z "$STREAM_URL" ]; then
 fi
 echo "Reading $STREAM_URL"
 
+# Note that we use $SNAP to reference to the root of our snap binary package, enabling us to access
+# unexposed binaries and files.
 COLUMNS=150 LINES=40 $SNAP/usr/bin/vlc --vout caca $STREAM_URL 2>/dev/null | nc -vv -l 0.0.0.0 8043 -
 
