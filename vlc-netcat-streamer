@@ -1,5 +1,8 @@
 #!/bin/sh -ex
 
+# WORKAROUND: change to $SNAP_DATA as services aren't started from it for now
+cd $SNAP_DATA
+
 stream_link_file="input_video"
 
 while [ ! -f $stream_link_file ]; do
