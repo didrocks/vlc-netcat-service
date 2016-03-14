@@ -1,0 +1,20 @@
+#!/bin/sh -ex
+
+stream_link_file="input_video"
+
+while [ ! -f $stream_link_file ]; do
+    echo "No file to read provided yet. Use http://<machine_ip>:8042 to read provide the url you want to convert to ascii"
+    sleep 5
+done
+
+ls
+. ./$stream_link_file
+if [ -z "$STREAM_URL" ]; then
+    echo "Invalid $stream_link_file file, deleting and exiting"
+    rm $stream_link_file
+    exit 1
+fi
+echo "Reading $STREAM_URL"
+
+COLUMNS=150 LINES=40 $SNAP/usr/bin/vlc --vout caca $STREAM_URL 2>/dev/null | nc -vv -l 0.0.0.0 8043 -
+
